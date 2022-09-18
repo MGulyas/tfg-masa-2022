@@ -3,7 +3,7 @@ from math import sqrt
 import numpy as np
 
 from src.common.color import BLACK
-from src.common.hit_data import HitData
+from src.core.hit_data import HitData
 from src.common.vector_3d import Normalize, Dot
 from src.core.object.primitive import Primitive
 
