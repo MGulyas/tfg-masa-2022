@@ -4,8 +4,10 @@ import time
 import cv2
 import numpy as np
 
+from src.integrators.depth_integrator import DepthIntegrator
 from src.integrators.intersection_integrator import IntersectionIntegrator
 from src.integrators.lazy_integrator import LazyIntegrator
+from src.integrators.normal_integrator import NormalIntegrator
 from src.scenes.sphere_test import sphere_test_scene
 
 FILENAME = 'rendered_image'
@@ -13,7 +15,7 @@ DIRECTORY = '.\\out\\'
 
 # -------------------------------------------------Main
 # Create Integrator
-integrator = IntersectionIntegrator(DIRECTORY + FILENAME)
+integrator = NormalIntegrator(DIRECTORY + FILENAME)
 
 # Create the scene
 scene = sphere_test_scene(areaLS=False, use_env_map=False)
