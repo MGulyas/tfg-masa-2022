@@ -2,12 +2,33 @@ import time
 
 # --------------------------------------------------Set up variables
 import cv2
+
+'''
+======================================
+# TODO For debugging, delete before delivering code
+'''
+import os, sys
+ci_build_and_not_headless = False
+try:
+    from cv2.version import ci_build, headless
+    ci_and_not_headless = ci_build and not headless
+except:
+    pass
+if sys.platform.startswith("linux") and ci_and_not_headless:
+    os.environ.pop("QT_QPA_PLATFORM_PLUGIN_PATH")
+if sys.platform.startswith("linux") and ci_and_not_headless:
+    os.environ.pop("QT_QPA_FONTDIR")
+'''
+======================================
+'''
 import numpy as np
+import os
 
 from src.integrators.depth_integrator import DepthIntegrator
 from src.integrators.intersection_integrator import IntersectionIntegrator
 from src.integrators.lazy_integrator import LazyIntegrator
 from src.integrators.normal_integrator import NormalIntegrator
+from src.integrators.phong_integrator import PhongIntegrator
 from src.scenes.sphere_test import sphere_test_scene
 
 FILENAME = 'rendered_image'
@@ -15,7 +36,7 @@ DIRECTORY = '.\\out\\'
 
 # -------------------------------------------------Main
 # Create Integrator
-integrator = NormalIntegrator(DIRECTORY + FILENAME)
+integrator = PhongIntegrator(DIRECTORY + FILENAME)
 
 # Create the scene
 scene = sphere_test_scene(areaLS=False, use_env_map=False)
