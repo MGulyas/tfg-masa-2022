@@ -7,6 +7,8 @@ import cv2
 ======================================
 # TODO For debugging, delete before delivering code
 '''
+DEBUG = False
+
 import os, sys
 ci_build_and_not_headless = False
 try:
@@ -14,9 +16,9 @@ try:
     ci_and_not_headless = ci_build and not headless
 except:
     pass
-if sys.platform.startswith("linux") and ci_and_not_headless:
+if DEBUG and sys.platform.startswith("linux") and ci_and_not_headless:
     os.environ.pop("QT_QPA_PLATFORM_PLUGIN_PATH")
-if sys.platform.startswith("linux") and ci_and_not_headless:
+if DEBUG and sys.platform.startswith("linux") and ci_and_not_headless:
     os.environ.pop("QT_QPA_FONTDIR")
 '''
 ======================================
