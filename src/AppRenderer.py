@@ -4,6 +4,7 @@ import time
 import cv2
 import numpy as np
 
+from src.integrators.intersection_integrator import IntersectionIntegrator
 from src.integrators.lazy_integrator import LazyIntegrator
 from src.scenes.sphere_test import sphere_test_scene
 
@@ -12,7 +13,7 @@ DIRECTORY = '.\\out\\'
 
 # -------------------------------------------------Main
 # Create Integrator
-integrator = LazyIntegrator(DIRECTORY + FILENAME)
+integrator = IntersectionIntegrator(DIRECTORY + FILENAME)
 
 # Create the scene
 scene = sphere_test_scene(areaLS=False, use_env_map=False)

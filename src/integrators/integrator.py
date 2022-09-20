@@ -3,6 +3,8 @@
 from abc import ABC, abstractmethod
 
 from src.common.color import RGBColor
+from src.common.ray import Ray
+from src.common.vector_3d import Vector3D
 
 
 class Integrator(ABC):
@@ -14,7 +16,7 @@ class Integrator(ABC):
         self.scene = None
 
     @abstractmethod
-    def compute_color(self, ray):
+    def compute_color(self, ray, scene):
         pass
 
     # def add_environment_map(self, env_map_path):
@@ -29,12 +31,13 @@ class Integrator(ABC):
     def render(self):
         # YOU MUST CHANGE THIS METHOD IN ASSIGNMENTS 1.1 and 1.2:
         cam = self.scene.camera  # camera object
-        # ray = Ray()
         print('Rendering Image: ' + self.get_filename())
         for x in range(0, cam.width):
             for y in range(0, cam.height):
+                ray = Ray(origin=Vector3D(0,0,0), direction=self.scene.camera.get_direction(x, y))
                 #pixel = GREEN
-                pixel = RGBColor(x/cam.width, y/cam.height, 0)
+                #pixel = RGBColor(x/cam.width, y/cam.height, 0)
+                pixel = self.compute_color(ray, self.scene)
                 self.scene.set_pixel(pixel, x, y)  # save pixel to pixel array
             progress = (x / cam.width) * 100
             print('\r\tProgress: ' + str(progress) + '%', end='')

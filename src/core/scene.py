@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 from src.common.environment_map import EnvironmentMap
-from src.common.hit_data import HitData
+from src.core.hit_data import HitData
 
 
 class Scene:
@@ -36,7 +36,9 @@ class Scene:
         self.pointLights.append(point_light)
 
     def any_hit(self, ray):
-        # ASSIGNMENT 1.2: PUT YOUR CODE HERE
+        for object in self.object_list:
+            if object.intersect(ray).has_hit:
+                return True
         return False
 
     def closest_hit(self, ray):
