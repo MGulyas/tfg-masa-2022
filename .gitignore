@@ -129,7 +129,7 @@ dmypy.json
 .pyre/
 
 # output images
-.out/
+.out/*
 
 # ide conifg
 .idea/
