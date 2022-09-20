@@ -130,6 +130,7 @@ dmypy.json
 
 # output images
 .out/*
+.\\out\\*
 
 # ide conifg
 .idea/
