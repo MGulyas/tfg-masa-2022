@@ -6,5 +6,5 @@ class LazyIntegrator(Integrator):
     def __init__(self, filename_):
         super().__init__(filename_ + '_Intersection')
 
-    def compute_color(self, ray):
+    def compute_color(self, ray, scene):
         return BLACK

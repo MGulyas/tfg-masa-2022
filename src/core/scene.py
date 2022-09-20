@@ -36,7 +36,9 @@ class Scene:
         self.pointLights.append(point_light)
 
     def any_hit(self, ray):
-        # ASSIGNMENT 1.2: PUT YOUR CODE HERE
+        for object in self.object_list:
+            if object.intersect(ray).has_hit:
+                return True
         return False
 
     def closest_hit(self, ray):
