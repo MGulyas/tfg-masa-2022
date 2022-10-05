@@ -51,3 +51,10 @@ def orient_normal(normal, direction):
         return normal * -1.0  # flip normal
     else:
         return normal
+
+def distance(a, b):
+    return sqrt((a.x - b.x) ** 2 + (a.y - b.y) ** 2 + (a.z + b.z) ** 2)
+
+
+def direction_vector(origin, end):
+    return Normalize(Vector3D(end.x - origin.x, end.y - origin.y, end.z - origin.z))

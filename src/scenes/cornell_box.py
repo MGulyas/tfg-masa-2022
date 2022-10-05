@@ -11,7 +11,7 @@ from src.core.scene import Scene
 def cornell_box_scene(dist, side, areaLS=False):
     # Create a scene object
     scene_ = Scene()
-    i_a = RGBColor(1.0, 1.0, 0.3)
+    i_a = RGBColor(0.05, 0.05, 0.015)
     scene_.set_ambient(i_a)
 
     # some useful values to create the box
@@ -82,6 +82,7 @@ def cornell_box_scene(dist, side, areaLS=False):
         delta_y = 0.5
         point_light_1 = PointLight(Vector3D(0.0, side / 2 - delta_y, -(dist + side / 2.0)),
                                    RGBColor(i_l, i_l, i_l))
+        print("point light: ", point_light_1.pos)
         scene_.add_point_light_sources(point_light_1)
         point_light_2 = PointLight(Vector3D(-side / 4, side / 2 - delta_y, -(dist + side / 2.0)),
                                    RGBColor(i_l, i_l, i_l))
@@ -91,7 +92,7 @@ def cornell_box_scene(dist, side, areaLS=False):
         scene_.add_point_light_sources(point_light_3)
 
     # Set up an environment map
-    env_map_path = '../env_maps/arch_nozero.hdr'
+    env_map_path = './env_maps/arch_nozero.hdr'
     scene_.set_environment_map(env_map_path)
 
     # Create the camera (always centred at 0,0,0)

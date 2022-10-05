@@ -3,6 +3,8 @@ import time
 # --------------------------------------------------Set up variables
 import cv2
 
+from src.scenes.cornell_box import cornell_box_scene
+
 '''
 ======================================
 # TODO For debugging, delete before delivering code
@@ -41,8 +43,8 @@ DIRECTORY = '.\\out\\'
 integrator = PhongIntegrator(DIRECTORY + FILENAME)
 
 # Create the scene
-scene = sphere_test_scene(areaLS=False, use_env_map=False)
-#scene = cornell_box_scene(0.75, 2, areaLS=False)
+#scene = sphere_test_scene(areaLS=False, use_env_map=False)
+scene = cornell_box_scene(0.75, 2, areaLS=False)
 
 # Attach the scene to the integrator
 integrator.add_scene(scene)
