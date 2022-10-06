@@ -11,7 +11,8 @@ from src.integrators.normal_integrator import NormalIntegrator
 from src.scenes.sphere_test import sphere_test_scene
 
 FILENAME = 'rendered_image'
-DIRECTORY = '.\\out\\'
+# DIRECTORY = '.\\out\\'
+DIRECTORY = './out/'
 
 # -------------------------------------------------Main
 # Create Integrator
