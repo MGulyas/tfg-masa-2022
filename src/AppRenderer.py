@@ -4,6 +4,7 @@ import time
 import cv2
 import numpy as np
 
+from src.integrators.classical_monte_carlo_integrator import ClassicalMonteCarloIntegrator
 from src.integrators.depth_integrator import DepthIntegrator
 from src.integrators.intersection_integrator import IntersectionIntegrator
 from src.integrators.lazy_integrator import LazyIntegrator
@@ -16,7 +17,8 @@ DIRECTORY = './out/'
 
 # -------------------------------------------------Main
 # Create Integrator
-integrator = NormalIntegrator(DIRECTORY + FILENAME)
+n=20
+integrator = ClassicalMonteCarloIntegrator(n, DIRECTORY + FILENAME)
 
 # Create the scene
 scene = sphere_test_scene(areaLS=False, use_env_map=False)

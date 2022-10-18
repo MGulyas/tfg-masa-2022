@@ -42,7 +42,8 @@ def Length(v):
 
 # Return normalized vector (unit vector)
 def Normalize(v):
-    return v * (1.0 / Length(v))
+    module = Length(v)
+    return Vector3D(0, 0, 0) if module == 0 else v * (1.0 / module)
 
 
 # Return normal that is pointing on the side as the passed direction
