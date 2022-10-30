@@ -1,9 +1,9 @@
 from math import sqrt, cos, sin, pi
 
 # PDF: p(omega) = (n+1)/(2*pi) * cos(theta)**n
-from src.common.constants import TWO_PI
-from src.common.pdfs.pdf import PDF
-from src.common.vector_3d import Vector3D, Dot
+from src.common import TWO_PI
+from src.common import PDF
+from src.common import Vector3D, Dot
 
 
 class CosinePDF(PDF):

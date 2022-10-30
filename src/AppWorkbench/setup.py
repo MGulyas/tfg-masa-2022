@@ -11,7 +11,7 @@ def set_up_ns_vector():
     ns_step = 20  # step for the number of samples
     return np.arange(start=ns_min, stop=ns_max, step=ns_step)  # the number of samples to use per estimate
 
-methods_label = [('MC', 'o')]
+methods_label = [('MC', 'o'), ('BMC', 'x')]
 # methods_label = [('MC', 'o'), ('MC IS', 'v'), ('BMC', 'x'), ('BMC IS', '1')]
 n_methods = len(methods_label) # number of tested monte carlo methods
 
