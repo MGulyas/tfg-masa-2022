@@ -7,7 +7,7 @@ import numpy as np
 
 def set_up_ns_vector():
     ns_min = 20  # minimum number of samples (ns) used for the Monte Carlo estimate
-    ns_max = 1001  # maximum number of samples (ns) used for the Monte Carlo estimate
+    ns_max = 161  # maximum number of samples (ns) used for the Monte Carlo estimate
     ns_step = 20  # step for the number of samples
     return np.arange(start=ns_min, stop=ns_max, step=ns_step)  # the number of samples to use per estimate
 
@@ -36,6 +36,4 @@ print('Ground truth: ' + str(ground_truth))
 ns_vector = set_up_ns_vector()
 n_estimates = 1  # the number of estimates to perform for each value in ns_vector
 
-
-# Initialize a matrix of estimate error at zero
-results = np.zeros((len(ns_vector), n_methods))  # Matrix of average error
+n_runs = 100
