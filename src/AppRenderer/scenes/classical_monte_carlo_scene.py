@@ -22,7 +22,7 @@ def classical_monte_carlo_scene(use_env_map=False):
     # sphere
     radius = 2
     sphere = Sphere(Vector3D(0.0, 0.0, -5.0), radius)
-    sphere.set_BRDF(pink_diffuse)
+    sphere.set_BRDF(white_diffuse)
     scene_.add_object(sphere)
 
 
@@ -53,11 +53,11 @@ def classical_monte_carlo_scene(use_env_map=False):
         # env_map_path = 'env_maps/black_and_white.hdr'
         # env_map_path = 'env_maps/outdoor_umbrellas_4k.hdr'
         # env_map_path = 'env_maps/outdoor_umbrellas_4k_clamped.hdr'
-        env_map_path = '../src/AppRenderer/env_maps/arch_nozero.hdr'
+        env_map_path = './src/AppRenderer/env_maps/arch_nozero.hdr'
         scene_.set_environment_map(env_map_path)
 
     # Create the camera
-    width = 500 #500
+    width = 500
     height = 500
     vertical_fov = 60
     camera = Camera(width, height, vertical_fov)

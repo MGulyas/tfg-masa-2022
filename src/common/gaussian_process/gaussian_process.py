@@ -23,6 +23,12 @@ class GP:
         #  close to singular, and thus not invertible).
         self.noise = noise_
 
+        self.original_normal = None # normal vector of hemisphere when weights were computed
+        self.weights = None
+        self.sample_positions = None
+
+        self.invQ = None
+        self.z = None
 
     # Method which computes and inverts the covariance matrix Q
     #  - IMPORTANT: requires that the samples positions are already known
@@ -44,7 +50,7 @@ class GP:
         #  based on the position omega_n of the nth sample. In most of the cases, these integrals do not have an
         #  analytic solution. Therefore, we can resort to classic Monte Carlo to estimate the value of these integrals
         #  (that is, of each element z_i of z).
-        ns = 250
+        ns = 10000 #250
         return np.array([monte_carlo_integral([SobolevFixedValue(sample_positions[j]), self.p_func], pdf, ns) for j in range(len(sample_positions))])
 
     # Method in charge of computing the BMC integral estimate (assuming the the prior mean function has value 0)
@@ -58,3 +64,29 @@ class GP:
         weights = z @ invQ
 
         return weights @ sample_values
+
+    def set_fixed_samples(self, sample_positions):
+        self.sample_positions = sample_positions
+
+    def compute_integral_BMC_with_fixed_samples(self, sample_values):
+        def rotate(matrix, vector):
+            pass
+        if self.weights is None: #suma de los pesos alrededor de 1
+            invQ = self.compute_inv_Q(self.sample_positions)
+            z = self.compute_z(self.sample_positions)
+            self.weights = z @ invQ
+            #self.original_normal = normal
+        return self.weights @ sample_values
+
+    def compute_integral_BMC_with_fixed_samples_with_rotation(self, sample_values):
+        def apply_random_rotation(matrix):
+
+            return matrix #TODO: also make sample values match to the rotated sample positions (outside)
+
+        if self.invQ is None:
+            self.invQ = self.compute_inv_Q(self.sample_positions)
+            self.z = self.compute_z(self.sample_positions)
+
+        weights = self.z @ apply_random_rotation(self.invQ)
+        return weights @ sample_values
+

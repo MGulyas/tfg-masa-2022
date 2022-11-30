@@ -1,0 +1,70 @@
+import itertools
+import time
+from random import uniform
+import numpy as np
+
+from src.AppRenderer.integrators.integrator import Integrator
+from src.AppWorkbench.classical_monte_carlo import get_random_direction
+from src.common.color import BLACK, RGBColor
+from src.common.functions import oriented_hemi_dir, visualize_sample_set
+from src.common.gaussian_process.covariance_functions.sobolev import Sobolev
+from src.common.gaussian_process.gaussian_process import GP
+from src.common.hemisphere_functions.constant import Constant
+from src.common.hemisphere_functions.cosine_lobe import CosineLobe
+from src.common.pdfs.uniform_pdf import UniformPDF
+from src.common.ray import Ray
+
+
+class ImprovedBayesianMonteCarloIntegrator(Integrator):
+    def __init__(self, n, gaussian_process, filename_, experiment_name=''):
+        filename_bmc = filename_ + '_improved_BMC_' + str(n) + '_samples' + experiment_name
+        super().__init__(filename_bmc)
+        self.n_samples = n
+        self.gaussian_process = gaussian_process
+        self.pdf = UniformPDF()
+        self.cosine_term = CosineLobe(1)
+        self.set_fixed_sample_positions_on_gaussian_process()
+
+    def set_fixed_sample_positions_on_gaussian_process(self):
+        sample_positions = [get_random_direction(self.pdf) for i in range(self.n_samples)]
+        self.gaussian_process.set_fixed_samples(sample_positions)
+
+    def get_sample_values(self, scene, hit_data, brdf):
+        samples = [self.get_random_direction(hit_data) for i in range(self.n_samples)]
+        return [self.get_value(scene, hit_data, samples[i], brdf) for i in range(self.n_samples)]
+
+    def get_random_direction(self, hit_data):
+        u1 = uniform(0, 1)  # random number between 0 and 1
+        u2 = uniform(0, 1)
+        return oriented_hemi_dir(self.pdf, u1, u2, hit_data.normal)
+
+    def get_value(self, scene, hit_data, omega_i, brdf):
+        def evaluate_integrand(integrand):
+            return np.prod([component.eval(omega_i) for component in integrand])
+        l_i = self.get_incident_radiance_from_direction(scene, hit_data, omega_i)
+        values_by_channel = list(map(evaluate_integrand, zip(l_i, brdf, itertools.repeat(CosineLobe(1, hit_data.normal)))))
+        return values_by_channel
+
+    def get_incident_radiance_from_direction(self, scene, hit_data, omega_i):
+        new_ray = Ray(origin=hit_data.hit_point, direction=omega_i)
+        new_hit_data = scene.closest_hit(new_ray)
+        if new_hit_data.has_hit:
+            incident_radiance = scene.object_list[new_hit_data.primitive_index].emission
+        else:
+            if scene.env_map:
+                incident_radiance = scene.env_map.getValue(new_ray.d)
+            else:
+                incident_radiance = BLACK
+        return (Constant(incident_radiance.r), Constant(incident_radiance.g), Constant(incident_radiance.b))
+
+
+    def compute_color(self, ray, scene):
+        hit_data = scene.closest_hit(ray)
+        if hit_data.has_hit:
+            kd = scene.object_list[hit_data.primitive_index].get_BRDF().kd
+            brdf = (Constant(kd.r), Constant(kd.g), Constant(kd.b))
+            value = self.gaussian_process.compute_integral_BMC_with_fixed_samples(self.get_sample_values(scene, hit_data, brdf))
+            return RGBColor(value[0], value[1], value[2])
+        if scene.env_map:
+            return scene.env_map.getValue(ray.d)
+        return BLACK

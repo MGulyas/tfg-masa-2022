@@ -1,3 +1,4 @@
+from math import pi
 from random import uniform
 import numpy as np
 
@@ -10,6 +11,7 @@ from src.common.hemisphere_functions.constant import Constant
 from src.common.hemisphere_functions.cosine_lobe import CosineLobe
 from src.common.pdfs.uniform_pdf import UniformPDF
 from src.common.ray import Ray
+from src.common.vector_3d import Vector3D
 
 
 class ClassicalMonteCarloIntegrator(Integrator):  # Classic Monte Carlo Integrator
@@ -19,13 +21,12 @@ class ClassicalMonteCarloIntegrator(Integrator):  # Classic Monte Carlo Integrat
         super().__init__(filename_mc)
         self.n_samples = n
         self.pdf = UniformPDF()
-        self.cosine_term = CosineLobe(1)
 
     def compute_estimate_cmc(self, sample_values_and_probabilites):
         N = len(sample_values_and_probabilites)
         cmc_estimates_by_color = []
         for i in range(3):
-            I = sum(sample_values_and_probabilites[j][0][i] / sample_values_and_probabilites[j][1] for j in range(N)) #TODO make better
+            I = sum(sample_values_and_probabilites[j][0][i] / sample_values_and_probabilites[j][1] for j in range(N))
             cmc_estimates_by_color.append(I/N)
         return RGBColor(cmc_estimates_by_color[0], cmc_estimates_by_color[1], cmc_estimates_by_color[2])
 
@@ -41,7 +42,7 @@ class ClassicalMonteCarloIntegrator(Integrator):  # Classic Monte Carlo Integrat
         def evaluate_integrand(integrand):
             return np.prod([component.eval(omega_i) for component in integrand])
         l_i = self.get_incident_radiance_from_direction(scene, hit_data, omega_i)
-        values_by_channel = list(map(evaluate_integrand, zip(l_i, brdf, itertools.repeat(self.cosine_term))))
+        values_by_channel = list(map(evaluate_integrand, zip(l_i, brdf, itertools.repeat(CosineLobe(1, hit_data.normal)))))
         return values_by_channel, self.pdf.get_val(omega_i)
 
     def get_incident_radiance_from_direction(self, scene, hit_data, omega_i):

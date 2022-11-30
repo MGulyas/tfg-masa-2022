@@ -1,11 +1,11 @@
-from src.common import RGBColor, BLACK
-from src.common import Vector3D
-from src.AppRenderer.core import Camera
-from src.AppRenderer.core import PointLight
-from src.AppRenderer.core import Lambertian
-from src.AppRenderer.core import Parallelogram
-from src.AppRenderer.core import Sphere
-from src.AppRenderer.core import Scene
+from src.AppRenderer.core.camera import Camera
+from src.AppRenderer.core.light.point_light import PointLight
+from src.AppRenderer.core.material.lambertian import Lambertian
+from src.AppRenderer.core.object.parallelogram import Parallelogram
+from src.AppRenderer.core.object.sphere import Sphere
+from src.AppRenderer.core.scene import Scene
+from src.common.color import RGBColor, BLACK
+from src.common.vector_3d import Vector3D
 
 
 def sphere_test_scene(areaLS=False, use_env_map=False):
@@ -60,8 +60,8 @@ def sphere_test_scene(areaLS=False, use_env_map=False):
         scene_.set_environment_map(env_map_path)
 
     # Create the camera
-    width = 200
-    height = 200
+    width = 100 #500
+    height = 100 #500
     vertical_fov = 60
     camera = Camera(width, height, vertical_fov)
     scene_.set_camera(camera)

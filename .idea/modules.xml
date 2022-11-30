@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/tfg-masa-2022.iml" filepath="$PROJECT_DIR$/.idea/tfg-masa-2022.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/tfg_masa_2022.iml" filepath="$PROJECT_DIR$/.idea/tfg_masa_2022.iml" />
     </modules>
   </component>
 </project>
