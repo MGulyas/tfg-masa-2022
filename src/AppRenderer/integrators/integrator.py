@@ -26,16 +26,16 @@ class Integrator(ABC):
     def get_filename(self):
         return self.filename
 
+    def prerender(self):
+        pass
+
     # Simple render loop: launches 1 ray per pixel
     def render(self):
-        # YOU MUST CHANGE THIS METHOD IN ASSIGNMENTS 1.1 and 1.2:
         cam = self.scene.camera  # camera object
         print('Rendering Image: ' + self.get_filename())
         for x in range(0, cam.width):
             for y in range(0, cam.height):
                 ray = Ray(origin=Vector3D(0,0,0), direction=self.scene.camera.get_direction(x, y))
-                #pixel = GREEN
-                #pixel = RGBColor(x/cam.width, y/cam.height, 0)
                 pixel = self.compute_color(ray, self.scene)
                 self.scene.set_pixel(pixel, x, y)  # save pixel to pixel array
             progress = (x / cam.width) * 100

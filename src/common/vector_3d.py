@@ -1,4 +1,5 @@
 from math import sqrt
+import numpy as np
 
 
 class Vector3D:
@@ -23,6 +24,9 @@ class Vector3D:
 
     def __repr__(self):
         return f'Vector3D({self.x}, {self.y}, {self.z})'
+
+    def to_numpy(self):
+        return np.array([self.x, self.y, self.z])
 
 
 # Return dot product between two vectors

@@ -57,7 +57,7 @@ def classical_monte_carlo_scene(use_env_map=False):
         scene_.set_environment_map(env_map_path)
 
     # Create the camera
-    width = 500
+    width = 500 #500
     height = 500
     vertical_fov = 60
     camera = Camera(width, height, vertical_fov)

@@ -2,6 +2,7 @@ import cv2
 import numpy as np
 import matplotlib.pyplot as plt
 
+from src.common.color import RGBColor
 from src.common.environment_map import EnvironmentMap
 from src.AppRenderer.core.hit_data import HitData
 
@@ -69,3 +70,9 @@ class Scene:
         self.rendered_image[y, x, 1] = pixel_val.g
         self.rendered_image[y, x, 2] = pixel_val.b
 
+    # get pixel value
+    def get_pixel(self, x, y):
+        if 0 <= x < self.camera.width and 0 <= y < self.camera.height:
+            pixel = self.rendered_image[x, y]
+            return RGBColor(pixel[0], pixel[1], pixel[2])
+        return None

@@ -13,9 +13,9 @@ def monte_carlo_integral_from_samples(integrand, pdf, samples):
 
 # Given a set of sample values of an integrand, as well as their corresponding probabilities, #
 # this function returns the classical Monte Carlo (cmc) estimate of the integral.               #
-def compute_estimate_cmc(sample_values_and_probabilites):
-    N = len(sample_values_and_probabilites)
-    I = sum(sample_values_and_probabilites[j][0] / sample_values_and_probabilites[j][1] for j in range(N))
+def compute_estimate_cmc(sample_values_and_probabilities):
+    N = len(sample_values_and_probabilities)
+    I = sum(sample_values_and_probabilities[j][0] / sample_values_and_probabilities[j][1] for j in range(N))
     return I / N
 
 
@@ -38,4 +38,4 @@ def get_random_direction(pdf):
 
 
 def get_value_and_probability(omega_i, integrand, pdf):
-    return (np.prod([component.eval(omega_i) for component in integrand]), pdf.get_val(omega_i))
+    return np.prod([component.eval(omega_i) for component in integrand]), pdf.get_val(omega_i)

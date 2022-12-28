@@ -20,34 +20,42 @@ if __name__ == "__main__":
     for run in range(n_runs):
         print(f'run {run}/{n_runs}')
         for k, ns in enumerate(ns_vector):
-            sample_positions = [get_random_direction(pdf) for i in range(ns)]
+            samples = [get_random_direction(pdf) for i in range(ns)]
+            values = get_samples_values_from_samples(samples, [l_i])
 
             #CMC
             #print(f'Computing estimates using {ns} samples')
-            abs_error_cmc = abs(ground_truth - monte_carlo_integral_from_samples(integrand, pdf, sample_positions))
+            abs_error_cmc = abs(ground_truth - monte_carlo_integral_from_samples(integrand, pdf, samples))
             results[k, 0, run] = abs_error_cmc
 
             #BMC
             #print(f'Computing estimates using {ns} samples')
-            gaussian_process = GP(cov_func=Sobolev(), p_func=Constant(1))
-            sample_values = get_samples_values_from_samples(sample_positions, integrand)
-            estimate_bmc = gaussian_process.compute_integral_BMC(sample_positions, sample_values)
+            gaussian_process = GP(cov_func=Sobolev(), p_func=cosine_term)
+            estimate_bmc = gaussian_process.compute_integral_BMC(samples, values)
             abs_error_bmc = abs(ground_truth - estimate_bmc)
             results[k, 1, run] = abs_error_bmc
 
+            #BMC with prior
+            gaussian_process = GP(cov_func=Sobolev(), p_func=cosine_term)
+            estimate_bmc = gaussian_process.compute_integral_BMC(samples, values, constant_prior=5.0)
+            abs_error_bmcp = abs(ground_truth - estimate_bmc)
+            results[k, 2, run] = abs_error_bmcp
+
+            """estimate_bmcp = gaussian_process.compute_integral_BMC(samples, sample_values, constant_priors=[3.14])
+            abs_error_bmcp = abs(ground_truth - estimate_bmcp[0])
+            results[k, 1, run] = abs_error_bmcp"""
+
             #CMC IS
-            sample_positions_is = [get_random_direction(importance_sampling_pdf) for i in range(ns)]
-            abs_error_icmc = abs(ground_truth - monte_carlo_integral_from_samples(integrand, importance_sampling_pdf, sample_positions))
-            results[k, 2, run] = abs_error_icmc
+            """samples_is = [get_random_direction(importance_sampling_pdf) for i in range(ns)]
+            abs_error_icmc = abs(ground_truth - monte_carlo_integral_from_samples(integrand, importance_sampling_pdf, samples))
+            results[k, 2, run] = abs_error_icmc"""
 
             #BMC IS
-            gaussian_process = GP(cov_func=Sobolev(), p_func=cosine_term)
-            sample_values_is = get_samples_values_from_samples(sample_positions_is, integrand)
-            estimate_bmc = gaussian_process.compute_integral_BMC(sample_positions_is, sample_values_is)
+            """ gaussian_process = GP(cov_func=Sobolev(), p_func=cosine_term)
+            sample_values_is = get_samples_values_from_samples(samples_is, integrand)
+            gaussian_process.compute_weights(samples)
+            estimate_bmc = gaussian_process.compute_integral_BMC_with_fixed_samples(sample_values_is, constant_priors=[0])
             abs_error_ibmc = abs(ground_truth - estimate_bmc)
-            results[k, 3, run] = abs_error_ibmc
-
-
-
+            results[k, 3, run] = abs_error_ibmc[0]"""
 
     show_error_plot(results.mean(2))
