@@ -1,5 +1,3 @@
-import numpy as np
-
 from src.common.constants import HUGEVALUE, EPSILON
 from src.common.vector_3d import Vector3D
 

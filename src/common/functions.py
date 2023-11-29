@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 
 # Convert a point set defined on the unit sphere from euclidean coordinates (3D) to 2D polar coordinates (disk)
 # Returns two np arrays
-from src.common.vector_3d import *
+from src.common.vector_3d import Vector3D, Dot, Cross, Normalize
 
 
 def euclidean_to_disk(sample_set):

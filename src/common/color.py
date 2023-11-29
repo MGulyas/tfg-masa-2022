@@ -34,6 +34,19 @@ class RGBColor:
         if (self.b > maximum): self.b = maximum
         if (self.b < minimum): self.b = minimum
 
+    def blend(self, colors):
+        colors = list(filter(lambda item: item is not None, colors))
+        blend = RGBColor(self.r, self.g, self.b)
+        n = len(colors)
+        for color in colors:
+            blend.r += color.r
+            blend.g += color.g
+            blend.b += color.b
+        blend.r = blend.r / n
+        blend.g = blend.g / n
+        blend.b = blend.b / n
+        return blend
+
     def __repr__(self):
         return f'RGBColor({self.r}, {self.g}, {self.b})'
 

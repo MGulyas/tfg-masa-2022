@@ -1,4 +1,5 @@
 from math import sqrt
+import numpy as np
 
 
 class Vector3D:
@@ -24,6 +25,9 @@ class Vector3D:
     def __repr__(self):
         return f'Vector3D({self.x}, {self.y}, {self.z})'
 
+    def to_numpy(self):
+        return np.array([self.x, self.y, self.z])
+
 
 # Return dot product between two vectors
 def Dot(a, b):
@@ -42,7 +46,8 @@ def Length(v):
 
 # Return normalized vector (unit vector)
 def Normalize(v):
-    return v * (1.0 / Length(v))
+    module = Length(v)
+    return Vector3D(0, 0, 0) if module == 0 else v * (1.0 / module)
 
 
 # Return normal that is pointing on the side as the passed direction
